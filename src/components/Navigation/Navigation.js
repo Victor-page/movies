@@ -23,9 +23,9 @@ const Navigation = () => {
       <NavLink
         className={classes.link}
         activeClassName={classes['active-link']}
-        to="/books"
+        to="/movies"
       >
-        Books
+        Movies
       </NavLink>
     </nav>
   );

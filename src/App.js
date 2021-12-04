@@ -1,27 +1,37 @@
-import { Route, Switch } from 'react-router';
+import { Route, Switch } from 'react-router-dom';
 import Navigation from 'components/Navigation';
 import HomeView from 'views/HomeView';
 import AuthorsView from 'views/AuthorsView';
-import BooksView from 'views/BooksView';
+import MoviesView from 'views/MoviesView';
+import MovieDetailsView from 'views/MovieDetailsView';
 import NotFoundView from 'views/NotFoundView';
 
 function App() {
   return (
     <div className="App">
       <Navigation />
-      <Route path="/" exact>
-        <HomeView />
-      </Route>
-      <Route path="/authors">
-        <AuthorsView />
-      </Route>
-      <Route path="/books">
-        <BooksView />
-      </Route>
 
-      <Route>
-        <NotFoundView />
-      </Route>
+      <Switch>
+        <Route path="/" exact>
+          <HomeView />
+        </Route>
+
+        <Route path="/authors">
+          <AuthorsView />
+        </Route>
+
+        <Route path="/movies" exact>
+          <MoviesView />
+        </Route>
+
+        <Route path="/movies/:movieId">
+          <MovieDetailsView />
+        </Route>
+
+        <Route>
+          <NotFoundView />
+        </Route>
+      </Switch>
     </div>
   );
 }
