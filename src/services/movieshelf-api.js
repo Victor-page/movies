@@ -33,5 +33,5 @@ export const fetchReviewsForMovie = (movieId) =>
     `${BASE_URL}/movie/${movieId}/reviews?api_key=${API_KEY}&language=en-US&page=1`
   );
 
-export const generateImageURL = (filePath) =>
-  `https://image.tmdb.org/t/p/w500${filePath}`;
+export const generateImageURL = (filePath, w = 500) =>
+  `https://image.tmdb.org/t/p/w${w}${filePath}`;

@@ -20,7 +20,7 @@ const HomeView = () => {
 
   return (
     <>
-      <PageHeading text="Trending Movies" />
+      <PageHeading text="Trending This Week" />
 
       {movies && (
         <ul className={classes.list}>

@@ -13,13 +13,7 @@ const Navigation = () => {
       >
         Main
       </NavLink>
-      <NavLink
-        className={classes.link}
-        activeClassName={classes['active-link']}
-        to="/authors"
-      >
-        Authors
-      </NavLink>
+
       <NavLink
         className={classes.link}
         activeClassName={classes['active-link']}

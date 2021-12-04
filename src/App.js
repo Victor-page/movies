@@ -1,7 +1,6 @@
 import { Route, Switch } from 'react-router-dom';
 import Navigation from 'components/Navigation';
 import HomeView from 'views/HomeView';
-import AuthorsView from 'views/AuthorsView';
 import MoviesView from 'views/MoviesView';
 import MovieDetailsView from 'views/MovieDetailsView';
 import NotFoundView from 'views/NotFoundView';
@@ -14,10 +13,6 @@ function App() {
       <Switch>
         <Route path="/" exact>
           <HomeView />
-        </Route>
-
-        <Route path="/authors">
-          <AuthorsView />
         </Route>
 
         <Route path="/movies" exact>

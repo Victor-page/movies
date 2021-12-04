@@ -4,6 +4,9 @@ const MoviesView = () => {
   return (
     <>
       <PageHeading text="Search for Movies" />
+      <form>
+        <input type="text" />
+      </form>
     </>
   );
 };
