@@ -1,3 +1,4 @@
+import classes from './ReviewsList.module.css';
 import * as movieShelfAPI from 'services/movieshelf-api';
 
 const ReviewsList = ({ reviews }) => {
@@ -27,7 +28,13 @@ const ReviewsList = ({ reviews }) => {
             <p>
               <span>{author}</span>
             </p>
-            {avatar_path && <img src={createSrc(avatar_path)} alt={author} />}
+            {avatar_path && (
+              <img
+                src={createSrc(avatar_path)}
+                alt={author}
+                className={classes.avatar}
+              />
+            )}
             <p>
               "<span>{content}</span>"
             </p>
