@@ -1,37 +1,42 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import * as movieShelfAPI from 'services/movieshelf-api';
+import CastList from 'components/CastList';
+import Status from 'utils/state-machine';
+const { PENDING, REJECTED, RESOLVED } = Status;
 
 const CastSubView = () => {
   const { movieId } = useParams();
 
   const [cast, setCast] = useState(null);
+  const [status, setStatus] = useState(PENDING);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!movieId) {
-      return;
-    }
-
-    movieShelfAPI.fetchActors(movieId).then(setCast);
+    setStatus(PENDING);
+    movieShelfAPI
+      .fetchActors(movieId)
+      .then(({ cast }) => {
+        setCast(cast);
+        setStatus(RESOLVED);
+      })
+      .catch((error) => {
+        setError(error);
+        setStatus(REJECTED);
+      });
   }, [movieId]);
 
-  return (
-    <ul>
-      {cast?.cast &&
-        cast.cast.map(({ id, name, character }) => {
-          return (
-            <li key={id}>
-              <p>
-                Name: <span>{name}</span>
-              </p>
-              <p>
-                Character: <span>{character}</span>
-              </p>
-            </li>
-          );
-        })}
-    </ul>
-  );
+  if (status === PENDING) {
+    return <p>Loading...</p>;
+  }
+
+  if (status === REJECTED) {
+    return <p>{error.message}</p>;
+  }
+
+  if (status === RESOLVED) {
+    return <CastList cast={cast} />;
+  }
 };
 
 export default CastSubView;

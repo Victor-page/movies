@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
-import classes from './TrendingList.module.css';
+import classes from './MovieList.module.css';
 
-const TrendingList = ({ trending }) => {
+const MovieList = ({ movies }) => {
   return (
     <ul className={classes.list}>
-      {trending.map(({ id, title }) => {
+      {movies.map(({ id, title }) => {
         return (
           <li key={id}>
             <p>
@@ -17,4 +17,4 @@ const TrendingList = ({ trending }) => {
   );
 };
 
-export default TrendingList;
+export default MovieList;

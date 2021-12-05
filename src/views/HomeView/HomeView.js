@@ -2,14 +2,8 @@ import { useState, useEffect } from 'react';
 
 import * as movieShelfAPI from 'services/movieshelf-api';
 import PageHeading from 'components/PageHeading';
-import TrendingList from 'components/TrendingList';
-
-const Status = {
-  IDLE: 'idle',
-  PENDING: 'pending',
-  RESOLVED: 'resolved',
-  REJECTED: 'rejected',
-};
+import MovieList from 'components/MovieList';
+import Status from 'utils/state-machine';
 
 const HomeView = () => {
   // const { url } = useRouteMatch();
@@ -38,7 +32,7 @@ const HomeView = () => {
       <PageHeading text="Trending This Week" />
       {status === Status.PENDING && <p>Loading...</p>}
       {status === Status.REJECTED && <p>{error.message}</p>}
-      {status === Status.RESOLVED && <TrendingList trending={trending} />}
+      {status === Status.RESOLVED && <MovieList movies={trending} />}
     </>
   );
 };
