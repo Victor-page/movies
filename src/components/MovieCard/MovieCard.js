@@ -1,8 +1,19 @@
+import { lazy, Suspense } from 'react';
 import { Route, useRouteMatch, NavLink } from 'react-router-dom';
-import CastSubView from 'views/MovieDetailsView/CastSubView';
-import ReviewsSubView from 'views/MovieDetailsView/ReviewsSubView';
 import classes from './MovieCard.module.css';
 import * as movieShelfAPI from 'services/movieshelf-api';
+
+const CastSubView = lazy(() =>
+  import(
+    'views/MovieDetailsView/CastSubView' /* webpackChunkName: 'cast-sub-view' */
+  )
+);
+
+const ReviewsSubView = lazy(() =>
+  import(
+    'views/MovieDetailsView/ReviewsSubView' /* webpackChunkName: 'review-sub-view' */
+  )
+);
 
 const MovieCard = ({ movie }) => {
   const { url, path } = useRouteMatch();
@@ -30,19 +41,23 @@ const MovieCard = ({ movie }) => {
       <section>
         <h2>Additional Information</h2>
 
-        <h3>
-          <NavLink to={`${url}/cast`}>Cast</NavLink>
-        </h3>
-        <Route path={`${path}/cast`}>
-          <CastSubView />
-        </Route>
+        <Suspense fallback={<h1>Loading...</h1>}>
+          <h3>
+            <NavLink to={`${url}/cast`}>Cast</NavLink>
+          </h3>
+          <Route path={`${path}/cast`}>
+            <CastSubView />
+          </Route>
+        </Suspense>
 
-        <h3>
-          <NavLink to={`${url}/reviews`}>Reviews</NavLink>
-        </h3>
-        <Route path={`${path}/reviews`}>
-          <ReviewsSubView />
-        </Route>
+        <Suspense fallback={<h1>Loading...</h1>}>
+          <h3>
+            <NavLink to={`${url}/reviews`}>Reviews</NavLink>
+          </h3>
+          <Route path={`${path}/reviews`}>
+            <ReviewsSubView />
+          </Route>
+        </Suspense>
       </section>
     </article>
   );

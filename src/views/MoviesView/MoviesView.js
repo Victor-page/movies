@@ -5,51 +5,47 @@ import SearchMoviesForm from 'components/SearchMoviesForm';
 import * as movieShelfAPI from 'services/movieshelf-api';
 import MovieList from 'components/MovieList';
 import Status from 'utils/state-machine';
+const { IDLE, PENDING, REJECTED, RESOLVED } = Status;
 
 const MoviesView = () => {
   const [foundMovies, setFoundMovies] = useState(null);
-  // const [query, setQuery] = useState('');
-  const [status, setStatus] = useState(Status.IDLE);
+  const [status, setStatus] = useState(IDLE);
   const [error, setError] = useState(null);
 
   const history = useHistory();
   const location = useLocation();
 
-  const query = new URLSearchParams(location.search).get('query') ?? '';
-  console.log(query);
-
   const handleSubmit = (query) => {
-    //  setQuery(query);
-    // console.log('history', history);
-    // console.log('location', location);
     history.push({ ...location, search: `query=${query}` });
   };
 
+  const searchQuery = new URLSearchParams(location.search).get('query') ?? '';
+
   useEffect(() => {
-    if (!query) {
+    if (!searchQuery) {
       return;
     }
 
-    setStatus(Status.PENDING);
+    setStatus(PENDING);
     movieShelfAPI
-      .searchMoviesByKeyword(query)
+      .searchMoviesByKeyword(searchQuery)
       .then(({ results }) => {
         setFoundMovies(results);
-        setStatus(Status.RESOLVED);
+        setStatus(RESOLVED);
       })
       .catch((error) => {
         setError(error);
-        setStatus(Status.REJECTED);
+        setStatus(REJECTED);
       });
-  }, [query]);
+  }, [searchQuery]);
 
   return (
     <>
       <PageHeading text="Search for Movies" />
       <SearchMoviesForm onSubmit={handleSubmit} />
-      {status === Status.PENDING && <p>Loading...</p>}
-      {status === Status.REJECTED && <p>{error.message}</p>}
-      {status === Status.RESOLVED && <MovieList movies={foundMovies} />}
+      {status === PENDING && <p>Loading...</p>}
+      {status === REJECTED && <p>{error.message}</p>}
+      {status === RESOLVED && <MovieList movies={foundMovies} />}
     </>
   );
 };
