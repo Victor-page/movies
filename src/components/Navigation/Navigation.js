@@ -11,7 +11,7 @@ const Navigation = () => {
         to="/"
         exact
       >
-        Main
+        Home
       </NavLink>
 
       <NavLink

@@ -1,40 +1,44 @@
 import { useState, useEffect } from 'react';
-import {
-  Link,
-  // useRouteMatch
-} from 'react-router-dom';
+
 import * as movieShelfAPI from 'services/movieshelf-api';
 import PageHeading from 'components/PageHeading';
-import classes from './HomeView.module.css';
+import TrendingList from 'components/TrendingList';
+
+const Status = {
+  IDLE: 'idle',
+  PENDING: 'pending',
+  RESOLVED: 'resolved',
+  REJECTED: 'rejected',
+};
 
 const HomeView = () => {
   // const { url } = useRouteMatch();
 
-  const [moviesResponse, setMoviesResponse] = useState(null);
+  const [trending, setTrending] = useState(null);
+  const [status, setStatus] = useState(Status.IDLE);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    movieShelfAPI.fetchTrending().then(setMoviesResponse);
-  }, []);
+    setStatus(Status.PENDING);
 
-  const movies = moviesResponse?.results && moviesResponse.results;
+    movieShelfAPI
+      .fetchTrending()
+      .then(({ results: trending }) => {
+        setTrending(trending);
+        setStatus(Status.RESOLVED);
+      })
+      .catch((error) => {
+        setError(error);
+        setStatus(Status.REJECTED);
+      });
+  }, []);
 
   return (
     <>
       <PageHeading text="Trending This Week" />
-
-      {movies && (
-        <ul className={classes.list}>
-          {movies.map(({ id, title }) => {
-            return (
-              <li key={id}>
-                <p>
-                  <Link to={`/movies/${id}`}>{title}</Link>
-                </p>
-              </li>
-            );
-          })}
-        </ul>
-      )}
+      {status === Status.PENDING && <p>Loading...</p>}
+      {status === Status.REJECTED && <p>{error.message}</p>}
+      {status === Status.RESOLVED && <TrendingList trending={trending} />}
     </>
   );
 };
