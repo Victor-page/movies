@@ -6,7 +6,7 @@ import classes from './SearchMoviesForm.module.css';
 const SearchMoviesForm = ({ onSubmit }) => {
   const [searchQuery, setSearchQuery] = useState('');
 
-  const handleQueryChange = ({ currentTarget: { value } }) => {
+  const handleQueryChange = ({ target: { value } }) => {
     setSearchQuery(value.toLowerCase());
   };
 
