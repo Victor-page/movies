@@ -1,6 +1,7 @@
 import { Route, useRouteMatch, NavLink } from 'react-router-dom';
 import CastSubView from 'views/MovieDetailsView/CastSubView';
 import ReviewsSubView from 'views/MovieDetailsView/ReviewsSubView';
+import classes from './MovieCard.module.css';
 import * as movieShelfAPI from 'services/movieshelf-api';
 
 const MovieCard = ({ movie }) => {
@@ -12,6 +13,7 @@ const MovieCard = ({ movie }) => {
         <img
           src={movieShelfAPI.generateImageURL(movie.poster_path)}
           alt={movie.original_title}
+          className={classes.poster}
         />
         <p>{movie.overview}</p>
       </section>
