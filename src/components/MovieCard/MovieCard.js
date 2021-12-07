@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Route, useRouteMatch, NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import classes from './MovieCard.module.css';
 import * as movieShelfAPI from 'services/movieshelf-api';
 
@@ -15,24 +16,26 @@ const ReviewsSubView = lazy(() =>
   )
 );
 
-const MovieCard = ({ movie }) => {
+const MovieCard = ({
+  movie: { poster_path, original_title, overview, genres },
+}) => {
   const { url, path } = useRouteMatch();
 
   return (
     <article>
       <section>
         <img
-          src={movieShelfAPI.generateImageURL(movie.poster_path)}
-          alt={movie.original_title}
+          src={movieShelfAPI.generateImageURL(poster_path)}
+          alt={original_title}
           className={classes.poster}
         />
-        <p>{movie.overview}</p>
+        <p>{overview}</p>
       </section>
 
       <section>
         <h2>Genres</h2>
         <ul>
-          {movie.genres.map((genre) => {
+          {genres.map((genre) => {
             return <li key={genre.id}>{genre.name}</li>;
           })}
         </ul>
@@ -61,6 +64,20 @@ const MovieCard = ({ movie }) => {
       </section>
     </article>
   );
+};
+
+MovieCard.propTypes = {
+  movie: PropTypes.shape({
+    poster_path: PropTypes.string,
+    original_title: PropTypes.string.isRequired,
+    overview: PropTypes.string,
+    genres: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string,
+      })
+    ),
+  }).isRequired,
 };
 
 export default MovieCard;

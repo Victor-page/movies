@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import slugify from 'slugify';
+import PropTypes from 'prop-types';
 import classes from './MovieList.module.css';
 
 const makeSlug = (string) => slugify(string, { lower: true });
@@ -29,6 +30,15 @@ const MovieList = ({ movies }) => {
       })}
     </ul>
   );
+};
+
+MovieList.propTypes = {
+  movies: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+    })
+  ),
 };
 
 export default MovieList;

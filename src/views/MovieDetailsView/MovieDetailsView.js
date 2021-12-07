@@ -3,9 +3,11 @@ import { useParams, useLocation, useHistory } from 'react-router-dom';
 
 import PageHeading from 'components/PageHeading';
 import * as movieShelfAPI from 'services/movieshelf-api';
-
+import GoBackButton from 'components/GoBackButton';
 import MovieCard from 'components/MovieCard';
+import getIdFromSlug from 'utils/get-id-from-slug';
 import Status from 'utils/state-machine';
+const { IDLE, PENDING, REJECTED, RESOLVED } = Status;
 
 const MovieDetailsView = () => {
   const history = useHistory();
@@ -13,44 +15,38 @@ const MovieDetailsView = () => {
   const { slug } = useParams();
 
   const [movie, setMovie] = useState(null);
-  const [status, setStatus] = useState(Status.IDLE);
+  const [status, setStatus] = useState(IDLE);
   const [error, setError] = useState(null);
 
-  const movieId = slug.match(/[a-zA-Z0-9]+$/)[0];
+  const movieId = getIdFromSlug(slug);
 
   useEffect(() => {
-    setStatus(Status.PENDING);
+    setStatus(PENDING);
     movieShelfAPI
       .fetchMovieDetails(movieId)
       .then((movie) => {
         setMovie(movie);
-        setStatus(Status.RESOLVED);
+        setStatus(RESOLVED);
       })
       .catch((error) => {
         setError(error);
-        setStatus(Status.REJECTED);
+        setStatus(REJECTED);
       });
   }, [movieId]);
 
-  const onGoBack = () => {
+  const handleGoBack = () => {
     history.push(location?.state?.from ?? '/');
   };
 
   return (
     <>
       <PageHeading
-        text={
-          status === Status.RESOLVED
-            ? movie.original_title
-            : `Movie № ${movieId}`
-        }
+        text={status === RESOLVED ? movie.original_title : `Movie № ${movieId}`}
       />
-      <button type="button" onClick={onGoBack}>
-        Back
-      </button>
-      {status === Status.PENDING && <p>Loading...</p>}
-      {status === Status.REJECTED && <p>{error.message}</p>}
-      {status === Status.RESOLVED && <MovieCard movie={movie} />}
+      <GoBackButton onGoBack={handleGoBack} />
+      {status === PENDING && <p>Loading...</p>}
+      {status === REJECTED && <p>{error.message}</p>}
+      {status === RESOLVED && <MovieCard movie={movie} />}
     </>
   );
 };

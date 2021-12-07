@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import classes from './ReviewsList.module.css';
 import * as movieShelfAPI from 'services/movieshelf-api';
 
@@ -43,6 +44,17 @@ const ReviewsList = ({ reviews }) => {
       )}
     </ul>
   );
+};
+
+ReviewsList.propTypes = {
+  reviews: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      author: PropTypes.string.isRequired,
+      content: PropTypes.string.isRequired,
+      author_details: PropTypes.shape({ avatar_path: PropTypes.string }),
+    })
+  ),
 };
 
 export default ReviewsList;

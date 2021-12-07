@@ -2,15 +2,18 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import * as movieShelfAPI from 'services/movieshelf-api';
 import CastList from 'components/CastList';
+import getIdFromSlug from 'utils/get-id-from-slug';
 import Status from 'utils/state-machine';
 const { PENDING, REJECTED, RESOLVED } = Status;
 
 const CastSubView = () => {
-  const { movieId } = useParams();
+  const { slug } = useParams();
 
   const [cast, setCast] = useState(null);
   const [status, setStatus] = useState(PENDING);
   const [error, setError] = useState(null);
+
+  const movieId = getIdFromSlug(slug);
 
   useEffect(() => {
     setStatus(PENDING);

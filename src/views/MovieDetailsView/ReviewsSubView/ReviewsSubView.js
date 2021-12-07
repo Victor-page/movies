@@ -2,15 +2,18 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import ReviewsList from 'components/ReviewsList';
 import * as movieShelfAPI from 'services/movieshelf-api';
+import getIdFromSlug from 'utils/get-id-from-slug';
 import Status from 'utils/state-machine';
 const { PENDING, REJECTED, RESOLVED } = Status;
 
 const ReviewsSubView = () => {
-  const { movieId } = useParams();
+  const { slug } = useParams();
 
   const [reviews, setReviews] = useState(null);
   const [status, setStatus] = useState(PENDING);
   const [error, setError] = useState(null);
+
+  const movieId = getIdFromSlug(slug);
 
   useEffect(() => {
     movieShelfAPI

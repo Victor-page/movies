@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PropTypes from 'prop-types';
 import classes from './SearchMoviesForm.module.css';
 
 const SearchMoviesForm = ({ onSubmit }) => {
@@ -35,5 +36,7 @@ const SearchMoviesForm = ({ onSubmit }) => {
     </form>
   );
 };
+
+SearchMoviesForm.propTypes = { onSubmit: PropTypes.func.isRequired };
 
 export default SearchMoviesForm;
