@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/components/ReviewsList/ReviewsList.module.css"],"names":[],"mappings":"AAAA,2BACE,cACF","file":"review-sub-view.a75b162b.chunk.css","sourcesContent":[".avatar {\r\n  max-width: 80px;\r\n}\r\n"]}
